@@ -28,13 +28,13 @@ def generate_launch_description():
             arguments=['-d', '/home/noi/pw2/scr/digital_twin/model/config/batmobil_config.rviz']  # Path to your RViz config file
         ),
         
-        # Node for MotorGui
-        Node(
-            package='serial_motor_demo',
-            executable='gui',
-            name='motor_gui',
-            output='screen'
-        ),
+        # # # Node for MotorGui
+        # # Node(
+        # #     package='serial_motor_demo',
+        # #     executable='gui',
+        # #     name='motor_gui',
+        # #     output='screen'
+        # ),
         # Joint State Publisher
         Node(
             package='joint_state_publisher',
@@ -59,16 +59,11 @@ def generate_launch_description():
             ],
             output='screen',
         ),
-        # Gazebo-ROS bridge
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
-            name='tf_bridge',
-            arguments=[
-                '/world/default/tf@tf2_msgs/msg/TFMessage@tf2_msgs/msg/TFMessage',
-                '/world/default/odom@nav_msgs/msg/Odometry@nav_msgs/msg/Odometry'
-            ],
-
+            name='cmd_vel_bridge',
+            arguments=['/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist'],
             output='screen'
         ),
 
@@ -92,14 +87,20 @@ def generate_launch_description():
             arguments=['0', '0', '0', '0', '0', '0', 'odom', 'dummy_link'],
             output='screen'
         ),
+        # # Node(
+        # #     package='controller_manager',
+        # #     executable='ros2_control_node',
+        # #     name='ros2_control_node',
+        # #     output='screen',
+        # #     parameters=[
+        # #         {'robot_description': Command(['xacro ', urdf_file_path ])}
+        # #     ]
+        # ),
         Node(
-            package='controller_manager',
-            executable='ros2_control_node',
-            name='ros2_control_node',
-            output='screen',
-            parameters=[
-                {'robot_description': Command(['xacro ', urdf_file_path ])}
-            ]
+            package='serial_motor_demo',  # Ersetze mit deinem Paketnamen
+            executable='cmd_vel_to_motor_command',
+            name='cmd_vel_to_motor_command',
+            output='screen'
         ),
 
 

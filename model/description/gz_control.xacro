@@ -3,9 +3,9 @@
 
     
     <!-- ROS 2 Control Tag -->
-    <ros2_control name="batmobile_controller" type="controller_manager">
+    <!--ros2_control name="batmobile_controller" type="controller_manager">
         <hardware>
-            <!-- Use the Gazebo System Plugin for ROS 2 Control -->
+            <Use the Gazebo System Plugin for ROS 2 Control >
             <plugin>gz_ros2_control/GazeboSystem</plugin>
         </hardware>
         <joint name="left_wheel_joint">
@@ -18,7 +18,7 @@
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
-    </ros2_control>
+    </ros2_control-->
     
     
     <gazebo>
