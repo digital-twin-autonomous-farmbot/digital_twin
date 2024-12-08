@@ -29,12 +29,12 @@ def generate_launch_description():
         ),
         
         # Node for MotorGui
-        #Node(
-          #  package='serial_motor_demo',
-           # executable='gui',
-            #name='motor_gui',
-            #output='screen'
-        #),
+        Node(
+            package='serial_motor_demo',
+            executable='gui',
+            name='motor_gui',
+            output='screen'
+        ),
         # Joint State Publisher
         Node(
             package='joint_state_publisher',
@@ -98,7 +98,7 @@ def generate_launch_description():
             name='ros2_control_node',
             output='screen',
             parameters=[
-                {'robot_description': Command(['xacro ', control_yaml])}
+                {'robot_description': Command(['xacro ', urdf_file_path ])}
             ]
         ),
 
