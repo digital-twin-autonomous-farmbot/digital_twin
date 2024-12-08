@@ -19,6 +19,15 @@ def generate_launch_description():
                 'robot_description': Command(['xacro ', urdf_file_path])
             }]
         ),
+        
+        # Joint State Publisher
+        Node(
+            package='joint_state_publisher',
+            executable='joint_state_publisher',
+            name='joint_state_publisher',
+            output='screen'
+        ),
+        ################################################################################################
         # Node for RViz2
         Node(
             package='rviz2',
@@ -27,22 +36,16 @@ def generate_launch_description():
             output='screen',
             arguments=['-d', '/home/noi/pw2/scr/digital_twin/model/config/batmobil_config.rviz']  # Path to your RViz config file
         ),
-        
-        # # # Node for MotorGui
-        # # Node(
-        # #     package='serial_motor_demo',
-        # #     executable='gui',
-        # #     name='motor_gui',
-        # #     output='screen'
-        # ),
-        # Joint State Publisher
-        Node(
-            package='joint_state_publisher',
-            executable='joint_state_publisher',
-            name='joint_state_publisher',
-            output='screen'
-        ),
 
+        # Node(
+        #     package='tf2_ros',
+        #     executable='static_transform_publisher',
+        #     name='static_tf_pub',
+        #     arguments=['0', '0', '0', '0', '0', '0', 'odom', 'dummy_link'],
+        #     output='screen'
+        # ),
+        ###############################################################################################
+        
         # Gazebo starten mit "gz sim"
         ExecuteProcess(
             cmd=['gz', 'sim', '-r', 'empty.sdf'],
@@ -59,6 +62,7 @@ def generate_launch_description():
             ],
             output='screen',
         ),
+
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
@@ -66,42 +70,21 @@ def generate_launch_description():
             arguments=['/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist'],
             output='screen'
         ),
+        ##########################################################################################################
 
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['diff_cont'],
-            output='screen',
-        ),
-
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['joint_broad'],
-            output='screen',
-        ),
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='static_tf_pub',
-            arguments=['0', '0', '0', '0', '0', '0', 'odom', 'dummy_link'],
-            output='screen'
-        ),
-        # # Node(
-        # #     package='controller_manager',
-        # #     executable='ros2_control_node',
-        # #     name='ros2_control_node',
-        # #     output='screen',
-        # #     parameters=[
-        # #         {'robot_description': Command(['xacro ', urdf_file_path ])}
-        # #     ]
-        # ),
         Node(
             package='serial_motor_demo',  # Ersetze mit deinem Paketnamen
             executable='cmd_vel_to_motor_command',
             name='cmd_vel_to_motor_command',
             output='screen'
         ),
+         # Node for MotorGui
+        #  Node(
+        #      package='serial_motor_demo',
+        #      executable='gui',
+        #      name='motor_gui',
+        #     output='screen'
+        # ),
 
 
     ])
