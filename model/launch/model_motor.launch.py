@@ -2,11 +2,18 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.substitutions import Command
 from launch.actions import ExecuteProcess
+import os
+from ament_index_python.packages import get_package_share_directory
+from launch.event_handlers import OnProcessExit
+
 
 def generate_launch_description():
-    # Path to the URDF/Xacro file
-    urdf_file_path = '/home/noi/pw2/scr/digital_twin/model/description/robo.urdf.xacro'
-    control_yaml = "/home/noi/pw2/scr/digital_twin/model/config/control.yaml"
+    pkg_dir = get_package_share_directory('model')
+
+    urdf_file_path = os.path.join(pkg_dir, 'description', 'robo.urdf.xacro')
+    control_yaml = os.path.join(pkg_dir, 'config', 'control.yaml')
+    batmobil_config = os.path.join(pkg_dir, 'config', 'batmobil_config.rviz')
+
 
     return LaunchDescription([
         # Node for robot_state_publisher
@@ -34,7 +41,7 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             output='screen',
-            arguments=['-d', '/home/noi/pw2/scr/digital_twin/model/config/batmobil_config.rviz']  # Path to your RViz config file
+            arguments=['-d', batmobil_config]  # Path to your RViz config file
         ),
 
         # Node(
