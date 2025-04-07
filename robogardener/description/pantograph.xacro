@@ -6,23 +6,54 @@
     <!-- Constants for arm dimensions -->
     <xacro:property name="arm_mass" value="0.5"/>
     <xacro:property name="arm_length" value="0.2"/>
-    <xacro:property name="pantograph_width" value="0.05"/>
+    <xacro:property name="pantograph_width" value="0.02"/>
+    <xacro:property name="bracket_mass" value="0.05"/>  
+    <xacro:property name="bracket_width" value="0.05"/>
+    <xacro:property name="bracket_length" value="0.2"/>
+    <xacro:property name="bracket_height" value="0.05"/>  
 
     <!-- Define the Pantograph Mechanism (2 links for simplicity) -->
+
+    <!-- bracket -->
+    <link name="bracket">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${bracket_width} ${bracket_length} ${bracket_height}"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 ${bracket_height/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${bracket_width} ${bracket_length} ${bracket_height}"/>
+        </geometry>
+        <material name="grey"/>
+      </visual>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${arm_mass}"/>
+        <inertia
+          ixx="${bracket_mass / 12.0 * (bracket_length*bracket_length + bracket_height*bracket_height)}" ixy="0.0" ixz="0.0"
+          iyy="${bracket_mass / 12.0 * (bracket_height * bracket_height + bracket_width * bracket_width)}" iyz="0.0"
+          izz="${bracket_mass / 12.0 * (bracket_width * bracket_width + bracket_length*bracket_length)}"/>
+      </inertial>
+    </link>
 
     <!-- First Pantograph Link -->
     <link name="pantograph_link_1">
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="${pantograph_width} ${arm_length} 0.025"/>
+          <box size="${arm_length} ${pantograph_width} 0.02"/>
         </geometry>
       </collision>
 
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="${pantograph_width} ${arm_length} 0.025"/>
+          <box size="${arm_length} ${pantograph_width} 0.02"/>
         </geometry>
         <material name="blue"/>
       </visual>
@@ -42,14 +73,14 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="${pantograph_width} ${arm_length} 0.025"/>
+          <box size="${arm_length} ${pantograph_width} 0.02"/>
         </geometry>
       </collision>
 
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <box size="${pantograph_width} ${arm_length} 0.025"/>
+          <box size="${arm_length} ${pantograph_width} 0.02"/>
         </geometry>
         <material name="red"/>
       </visual>
@@ -66,12 +97,21 @@
 
 
     <!-- Joints for Pantograph Movement -->
-    <joint name="pantograph_joint_1" type="revolute">
+
+    <joint name="bracket_joint" type="fixed">
       <parent link="base_link"/>
-      <child link="pantograph_link_1"/>
-      <origin xyz="${base_width/4} 0 0" rpy="0 0 0"/>
+      <child link="bracket"/>
+      <origin xyz="${base_width-base_width/2} 0 0" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="100" velocity="1.0" lower="-1.5" upper="1.5"/>
+
+    </joint>
+
+    <joint name="pantograph_joint_1" type="revolute">
+      <parent link="bracket"/>
+      <child link="pantograph_link_1"/>
+      <origin xyz="${bracket_length/2} -0.08 ${bracket_height/2}" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="100" velocity="1.0" lower="-0.5" upper="0.5"/>
 
     </joint>
 
@@ -80,7 +120,7 @@
       <child link="pantograph_link_2"/>
       <origin xyz="${arm_length} 0 ${pantograph_width/4}" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="100" velocity="1.0" lower="-1.5" upper="1.5"/>
+      <limit effort="100" velocity="1.0" lower="-0.5" upper="0.5"/>
 
     </joint>
 
@@ -90,7 +130,7 @@
       <child link="end_effector"/>
       <origin xyz="${arm_length} 0 0" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="100" velocity="1.0" lower="-1.5" upper="1.5"/>
+      <limit effort="100" velocity="1.0" lower="-0.5" upper="0.5"/>
 
     </joint>
 
