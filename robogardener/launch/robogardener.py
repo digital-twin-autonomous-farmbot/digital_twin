@@ -47,15 +47,14 @@ def generate_launch_description():
             package='rviz2',
             executable='rviz2',
             name='rviz2',
-            output='screen',
-            arguments=['-d', batmobil_config]  # Path to your RViz config file
+            output='screen'
         ),
 
          Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             name='static_tf_pub',
-            arguments=['0', '0', '0', '0', '0', '0', 'odom', 'dummy_link'],
+            arguments=['0', '0', '0', '0', '0', '0', 'odom', 'odom_link'],
             output='screen'
         ),
 

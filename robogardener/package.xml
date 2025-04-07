@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>robogardener</name>
+  <version>0.0.0</version>
+  <description>robogardener package for URDF visualization</description>
+  <maintainer email="noiringraham65@gmail.com">Your Name</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>urdf</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>gz_ros2_control</depend>
+  <depend>gz_control</depend>
+
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
