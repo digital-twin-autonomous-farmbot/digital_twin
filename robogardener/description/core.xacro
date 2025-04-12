@@ -49,7 +49,7 @@
       </inertial>
     </link>
 
-    <xacro:pantograph_arm/>
+    <!--xacro:pantograph_arm/ -->
 
     <joint name="left_f_wheel_joint" type="continuous">
       <parent link="base_link"/>

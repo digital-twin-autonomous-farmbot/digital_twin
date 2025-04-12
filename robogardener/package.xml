@@ -13,6 +13,7 @@
   <depend>robot_state_publisher</depend>
   <depend>gz_ros2_control</depend>
   <depend>gz_control</depend>
+  <depend>state_publisher</depend>
 
 
   <export>
