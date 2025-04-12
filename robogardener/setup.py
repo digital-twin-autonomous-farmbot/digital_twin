@@ -3,16 +3,22 @@ import os
 from glob import glob
 from setuptools import setup, find_packages
 
+package_name = 'robogardener'
+
 setup(
-    name='robogardener',
+    name=package_name,
     version='0.0.0',
-    packages=['robogardener'],
+    packages=[],
+    py_modules=[
+        'state_publisher'  # Wenn die Datei direkt im nodes-Ordner liegt
+    ],
     data_files=[
-        ('share/ament_index/resource_index/packages', ['resource/robogardener']),
-        ('share/robogardener', ['package.xml']),
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
 #ADDED
-        (os.path.join('share', 'robogardener', 'launch'), glob('launch/*.py')),
-        (os.path.join('share', 'robogardener', 'description'), glob('description/*.xacro')),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
+        (os.path.join('share', package_name, 'description'), glob('description/*.xacro')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -23,8 +29,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'state_publisher = robogardener.nodes.state_publisher:main',
-            # Weitere Python-Nodes hier eintragen
+            'state_publisher = state_publisher:main',
         ],
     },
 )
