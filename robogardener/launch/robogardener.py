@@ -34,7 +34,7 @@ def generate_launch_description():
         
         # State Publisher
         Node(
-            package='nodes',
+            package='robogardener',
             executable='state_publisher',
             name='state_publisher',
             output='screen'
