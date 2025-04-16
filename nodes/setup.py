@@ -3,7 +3,7 @@ import os
 from glob import glob
 from setuptools import setup, find_packages
 
-package_name = 'robogardener'
+package_name = 'nodes'
 
 setup(
     name=package_name,
@@ -24,7 +24,7 @@ setup(
     zip_safe=True,
     maintainer='noiringraham',
     maintainer_email="grahanoi@students.zhaw.ch",
-    description='Robogardener Package',
+    description='Robogardener Node',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
