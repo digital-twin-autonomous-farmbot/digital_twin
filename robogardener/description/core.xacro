@@ -13,9 +13,7 @@
   <xacro:property name="wheel_len" value="0.05" />
   <xacro:property name="wheel_radius" value="0.05" />
 
-  <gazebo>
-    <plugin filename="libgz_ros2_control_system.so" name="gz_ros2_control::GazeboSystemPlugin"/>
-  </gazebo>
+
 
   
   

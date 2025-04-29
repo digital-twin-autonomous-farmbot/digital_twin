@@ -13,6 +13,10 @@
     <xacro:include filename="ros2_control.xacro" />
     
 
+    <gazebo>
+        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSystemPlugin"/>
+    </gazebo>
+
     <!-- Macro Invocation -->
     <xacro:robot />
     
