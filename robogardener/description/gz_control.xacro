@@ -1,74 +1,30 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    
-    <!-- ROS 2 Control Tag -->
-    <!--ros2_control name="batmobile_controller" type="controller_manager">
-        <hardware>
-            <Use the Gazebo System Plugin for ROS 2 Control >
-            <plugin>gz_ros2_control/GazeboSystem</plugin>
-        </hardware>
-        <joint name="left_wheel_joint">
-            <command_interface name="position"/>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        <joint name="right_wheel_joint">
-            <command_interface name="position"/>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-    </ros2_control-->
+    <ros2_control name="robogardener_controller" type="system">
+    <hardware>
+        <plugin>gz_ros2_control/GazeboSystem</plugin>
+    </hardware>
 
-
-    <!-- constants for robot dimensions-->
-  <xacro:property name="PI" value="3.1415926535897931"/>
-  <xacro:property name="base_mass" value="6" /> <!-- arbitrary value for base mass -->
-  <xacro:property name="base_width" value="0.3" />
-  <xacro:property name="base_length" value="0.2" />
-  <xacro:property name="base_height" value="0.1" />
-  <xacro:property name="wheel_mass" value="0.1" /> <!-- arbitrary value for wheel mass -->
-  <xacro:property name="wheel_len" value="0.05" />
-  <xacro:property name="wheel_radius" value="0.05" />
-    
-    
-    <gazebo>
-        <plugin name="gz::sim::systems::DiffDrive" filename="gz-sim-diff-drive-system">
-
-            <!-- Left wheels -->
-      <left_joint>left_f_wheel_joint</left_joint>
-      <left_joint>left_b_wheel_joint</left_joint>
-
-      <!-- Right wheels -->
-      <right_joint>right_f_wheel_joint</right_joint>
-      <right_joint>right_b_wheel_joint</right_joint>
-
-      <!-- Wheel geometry -->
-      <wheel_separation>${base_length}</wheel_separation>  <!-- consider using actual separation -->
-      <wheel_radius>${wheel_radius}</wheel_radius>
-
-      <!-- Topics -->
-      <topic>/cmd_vel</topic>
-      <odom_topic>odom</odom_topic>
-
-      <!-- Frames -->
-      <frame_id>odom</frame_id>
-      <child_frame_id>base_link</child_frame_id>
-
-      <!-- Publish settings -->
-      <odom_publish_frequency>50</odom_publish_frequency>
-      <publish_tf>true</publish_tf>
-    </plugin>
-
-        <plugin filename="gz-sim-joint-state-publisher-system"
-            name="gz::sim::systems::JointStatePublisher">
-            <topic>joint_states</topic>
-      <joint_name>left_f_wheel_joint</joint_name>
-      <joint_name>left_b_wheel_joint</joint_name>
-      <joint_name>right_f_wheel_joint</joint_name>
-      <joint_name>right_b_wheel_joint</joint_name>
-    </plugin>
-  </gazebo>
-
-
+    <joint name="left_f_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="left_b_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_f_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_b_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+    </joint>
+    </ros2_control>
 </robot>

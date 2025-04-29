@@ -7,21 +7,22 @@
   <license>Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <buildtool_depend>ament_cmake_python</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>rclpy</depend>
-  <depend>std_msgs</depend>
-  <depend>sensor_msgs</depend>
   <depend>urdf</depend>
   <depend>robot_state_publisher</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>xacro</depend>
+  <depend>controller_manager</depend>
+  <depend>diff_drive_controller</depend>
+  <depend>joint_state_broadcaster</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>rviz2</depend>
   <depend>gz_ros2_control</depend>
   <depend>gz_control</depend>
-  <depend>state_publisher</depend>
-
 
   <export>
     <build_type>ament_cmake</build_type>
-    <build_type>ament_python</build_type>
   </export>
 </package>

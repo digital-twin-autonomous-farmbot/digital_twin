@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ROS2 Control Integration -->
+  <ros2_control name="robogardener_controller" type="system">
+    <hardware>
+      <!-- Gazebo plugin -->
+      <plugin>gz_ros2_control/GazeboSystem</plugin>
+    </hardware>
+
+    <!-- Left front wheel -->
+    <joint name="left_f_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Left back wheel -->
+    <joint name="left_b_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Right front wheel -->
+    <joint name="right_f_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Right back wheel -->
+    <joint name="right_b_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+</robot>
