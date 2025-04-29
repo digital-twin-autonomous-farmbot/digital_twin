@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- ROS2 Control Integration -->
-  <ros2_control name="robogardener_controller" type="system">
+  <ros2_control name="controller_manager" type="system">
     <hardware>
       <!-- Gazebo plugin -->
       <plugin>gz_ros2_control/GazeboSystem</plugin>

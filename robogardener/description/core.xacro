@@ -12,6 +12,11 @@
   <xacro:property name="wheel_mass" value="0.1" /> <!-- arbitrary value for wheel mass -->
   <xacro:property name="wheel_len" value="0.05" />
   <xacro:property name="wheel_radius" value="0.05" />
+
+  <gazebo>
+    <plugin filename="libgz_ros2_control_system.so" name="gz_ros2_control::GazeboSystemPlugin"/>
+  </gazebo>
+
   
   
   <link name="dummy_link"/>
@@ -194,6 +199,9 @@
           izz="${wheel_mass / 2.0 * wheel_radius*wheel_radius}"/>
         </inertial>
       </link>
+
+      
+
 
   </xacro:macro>
 

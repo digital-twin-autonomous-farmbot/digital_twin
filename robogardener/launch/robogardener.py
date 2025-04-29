@@ -1,6 +1,7 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
+from launch.actions import LogInfo, TimerAction
 from launch.substitutions import Command
 from launch.actions import ExecuteProcess
 import os
@@ -71,6 +72,14 @@ def generate_launch_description():
         ),
 
         Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='cmd_vel_bridge',
+            arguments=['/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist'],
+            output='screen'
+        ),
+
+        Node(
             package='controller_manager',
             executable='ros2_control_node',
             output='screen',
@@ -82,20 +91,33 @@ def generate_launch_description():
             arguments=['--ros-args', '--log-level', 'info']
         ),
 
-
-        # Spawn Joint State Broadcaster
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
-            output='screen'
+        # Log info message
+        LogInfo(
+            msg="Controller manager is starting..."
         ),
 
-        # Spawn Diff Drive Controller
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['diff_drive_controller', '--controller-manager', '/controller_manager'],
-            output='screen'
-        )
+        # Log info message
+        LogInfo(
+            msg="Waiting for the controller manager service to become available..."
+        ),
+        
+        # Delay action: wait 15 seconds before spawning controllers
+        TimerAction(
+            period=15.0,  # wait for 15 seconds
+            actions=[
+                # Spawner nodes
+                Node(
+                    package='controller_manager',
+                    executable='spawner',
+                    output='screen',
+                    arguments=['diff_drive_controller']
+                ),
+                Node(
+                    package='controller_manager',
+                    executable='spawner',
+                    output='screen',
+                    arguments=['joint_state_broadcaster']
+                ),
+            ]
+        ),
     ])
