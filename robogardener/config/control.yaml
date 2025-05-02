@@ -1,28 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100
-    use_sim_time: true
-
-diff_drive_controller:
-  ros__parameters:
-    left_wheel_names: ["left_b_wheel_joint"]
-    right_wheel_names: ["right_b_wheel_joint"]
-    wheel_separation: 0.3  # Distance between left and right wheels
-    wheel_separation_multiplier: 1.0
-    wheel_radius: 0.05
-    wheel_radius_multiplier: 1.0
-    odom_frame_id: odom
-    base_frame_id: base_link
-    publish_odom: true
-    publish_odom_tf: true
-    publish_wheel_tf: true
-    cmd_vel_timeout: 0.25
-    use_stamped_vel: false
-    publish_rate: 50.0
-    open_loop: false
-    velocity_rolling_window_size: 10
-    enable_odom_tf: true
+    update_rate: 50
 
 joint_state_broadcaster:
-  ros__parameters:
-    type: joint_state_broadcaster/JointStateBroadcaster
+  ros__parameters: {}

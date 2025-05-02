@@ -1,7 +1,9 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, LogInfo, TimerAction, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
 from launch_ros.actions import Node
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.substitutions import Command
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 import os
 from ament_index_python.packages import get_package_share_directory
 
@@ -13,12 +15,12 @@ def generate_launch_description():
     urdf_file = os.path.join(pkg_dir, 'description', 'robo.urdf.xacro')
     rviz_config = os.path.join(pkg_dir, 'config', 'rviz_config.rviz')
     control_yaml = os.path.join(pkg_dir, 'config', 'control.yaml')
-    world_file = os.path.join(pkg_dir, 'worlds', 'empty.sdf')  # Make sure this exists
+    nav2_params = os.path.join(pkg_dir, 'config', 'nav2_params.yaml')
+    world_file = os.path.join(pkg_dir, 'worlds', 'empty.sdf')
     
     robot_description_content = Command(
         ['xacro ', urdf_file, ' use_mock_hardware:=false']
     )
-    robot_description = {'robot_description': robot_description_content}
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -37,21 +39,19 @@ def generate_launch_description():
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
-            output='screen',
             parameters=[{
                 'robot_description': robot_description_content,
                 'use_sim_time': use_sim_time,
                 'publish_frequency': 50.0
-            }]
+            }],
+            output='screen'
         ),
 
+        # Joint State Publisher (optional, but useful for debugging)
         Node(
             package='joint_state_publisher',
             executable='joint_state_publisher',
-            parameters=[{
-                'use_sim_time': use_sim_time,
-                'rate': 50  # Match controller update rate
-            }],
+            parameters=[{'use_sim_time': use_sim_time}],
             output='screen'
         ),
 
@@ -59,75 +59,57 @@ def generate_launch_description():
         Node(
             package='ros_gz_sim',
             executable='create',
-            arguments=[
-                '-topic', '/robot_description',
-                '-name', 'robogardener',
-                '-x', '0.0',
-                '-y', '0.0',
-                '-z', '0.1'
-            ],
+            arguments=['-topic', '/robot_description', '-name', 'robogardener'],
             output='screen'
         ),
 
-        # ROS-Gazebo Bridge for basic topics
+        # ROS-Gazebo Bridge (for cmd_vel and odom)
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
                 '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
-                '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-                '/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V'
+                '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry'
             ],
             output='screen'
         ),
 
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=['0', '0', '0.025', '0', '0', '0', 'world', 'odom'],
-            output='screen'
-        ),
-
-
-        # ROS2 Control Node
+        # ROS2 Control (only for joint_state_broadcaster)
         Node(
             package='controller_manager',
             executable='ros2_control_node',
             parameters=[
-                robot_description,
-                control_yaml,  # Load entire control config file
-                {'use_sim_time': use_sim_time}
+                {'robot_description': robot_description_content},
+                control_yaml,
+                {'use_sim_time': use_sim_time},
             ],
-            output='screen',
-            arguments=['--ros-args', '--log-level', 'info']
+            output='screen'
         ),
 
-        LogInfo(msg="Controller manager is starting..."),
+        # Joint State Broadcaster (for TF)
+        Node(
+            package='controller_manager',
+            executable='spawner',
+            arguments=['joint_state_broadcaster'],
+            output='screen'
+        ),
 
-        # Spawn controllers after delay
-        TimerAction(
-            period=5.0,  # Reduced from 15s to 5s
-            actions=[
-                Node(
-                    package='controller_manager',
-                    executable='spawner',
-                    arguments=['joint_state_broadcaster'],
-                    output='screen'
-                ),
-                Node(
-                    package='controller_manager',
-                    executable='spawner',
-                    arguments=['diff_drive_controller'],
-                    output='screen'
-                ),
-            ]
+        # Nav2
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                get_package_share_directory('nav2_bringup'),
+                '/launch/navigation_launch.py'
+            ]),
+            launch_arguments={
+                'use_sim_time': str(use_sim_time),
+                'params_file': nav2_params
+            }.items()
         ),
 
         # RViz2
         Node(
             package='rviz2',
             executable='rviz2',
-            name='rviz2',
             arguments=['-d', rviz_config],
             parameters=[{'use_sim_time': use_sim_time}],
             output='screen'
