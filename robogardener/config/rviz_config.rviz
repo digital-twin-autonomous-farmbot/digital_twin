@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /RobotModel1
+        - /RobotModel1/Mass Properties1
         - /TF1
       Splitter Ratio: 0.5
     Tree Height: 542
@@ -72,10 +73,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        dummy_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         left_b_wheel:
           Alpha: 1
           Show Axes: false
@@ -113,19 +110,7 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
-        dummy_link:
-          Value: true
-        left_b_wheel:
-          Value: true
-        left_f_wheel:
-          Value: true
-        odom:
-          Value: true
-        odom_link:
-          Value: true
-        right_b_wheel:
-          Value: true
-        right_f_wheel:
+        world:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -133,22 +118,15 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        dummy_link:
+        world:
           base_link:
-            left_b_wheel:
-              {}
-            left_f_wheel:
-              {}
-            right_b_wheel:
-              {}
-            right_f_wheel:
-              {}
+            {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: dummy_link
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -206,10 +184,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.05039818212389946
+      Pitch: 0.1203981563448906
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.555402398109436
+      Yaw: 1.1704022884368896
     Saved: ~
 Window Geometry:
   Displays:

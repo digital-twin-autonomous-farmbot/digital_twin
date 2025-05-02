@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robogardener">
-  <xacro:include filename="pantograph.xacro"/>  
-  <xacro:macro name="robot">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
   <!-- constants for robot dimensions-->
   <xacro:property name="PI" value="3.1415926535897931"/>
@@ -13,17 +11,6 @@
   <xacro:property name="wheel_len" value="0.05" />
   <xacro:property name="wheel_radius" value="0.05" />
 
-
-
-  
-  
-  <link name="dummy_link"/>
-
-  <joint name="fixed_base_joint" type="fixed">
-    <parent link="dummy_link"/>
-    <child link="base_link"/>
-    <origin xyz="0 0 0.025" rpy="0 0 0"/>
-  </joint>
     
     <!-- Base Link -->
   <link name="base_link">
@@ -200,7 +187,5 @@
 
       
 
-
-  </xacro:macro>
 
 </robot>

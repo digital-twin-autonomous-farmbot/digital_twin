@@ -1,40 +1,48 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <!-- ROS2 Control Integration -->
-  <ros2_control name="controller_manager" type="system">
-    <hardware>
-      <!-- Gazebo plugin -->
-      <plugin>gz_ros2_control/GazeboSystem</plugin>
-    </hardware>
+  <xacro:macro name="robogardener_ros2_control" params="name prefix use_mock_hardware">
 
-    <!-- Left front wheel -->
-    <joint name="left_f_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
+    <ros2_control name="${name}" type="system">
+      <xacro:unless value="${use_mock_hardware}">
+        <hardware>
+          <plugin>gz_ros2_control/GazeboSystem</plugin>
+          <param name="robot_description">{load_urdf('$(find robogardener)/urdf/robo.urdf.xacro')}</param>
+        </hardware>
+      </xacro:unless>
+      <xacro:if value="${use_mock_hardware}">
+        <hardware>
+          <plugin>mock_components/GenericSystem</plugin>
+          <param name="state_interfaces">position,velocity</param>
+          <param name="command_interfaces">velocity</param>
+        </hardware>
+      </xacro:if>
 
-    <!-- Left back wheel -->
-    <joint name="left_b_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
+      <joint name="${prefix}left_f_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
 
-    <!-- Right front wheel -->
-    <joint name="right_f_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
+      <joint name="${prefix}left_b_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
 
-    <!-- Right back wheel -->
-    <joint name="right_b_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-  </ros2_control>
+      <joint name="${prefix}right_f_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="${prefix}right_b_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+  </xacro:macro>
 
 </robot>

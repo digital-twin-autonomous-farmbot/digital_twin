@@ -1,23 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robogardener">
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="use_mock_hardware" default="false" />
 
-    <!-- Arguments -->
-    <xacro:arg name="sim_mode" default="true" />
-
-    
-    
-    <!-- Includes -->
-    <xacro:include filename="core.xacro" />
-    <xacro:include filename="materials.xacro" />
-    <xacro:include filename="gz_control.xacro" />
-    <xacro:include filename="ros2_control.xacro" />
-    
-
-    <gazebo>
-        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSystemPlugin"/>
-    </gazebo>
-
-    <!-- Macro Invocation -->
-    <xacro:robot />
-    
+  <xacro:include filename="core.xacro" />
+  <xacro:include filename="materials.xacro" />
+  <xacro:include filename="ros2_control.xacro" />
+  
+  <!-- Actually call the ros2_control macro -->
+  <xacro:robogardener_ros2_control 
+    name="robogardener" 
+    prefix="$(arg prefix)" 
+    use_mock_hardware="$(arg use_mock_hardware)"/>
 </robot>
